@@ -183,4 +183,62 @@ An abandoned session results in its order being marked as `ABANDONED`.
 ```text
 OPEN ──► ABANDONED
 ```
-  
+
+## Frontend Flow
+
+The self-checkout client is designed as a simple, touch-first kiosk experience.
+
+### Idle
+
+When the application loads, it starts in an **idle** state and displays a prominent **“Tap to start”** action.
+
+### Start Session
+
+When the customer taps to start:
+
+1. The client calls the API to create a new checkout session for the device.
+2. Once the session and initial menu are returned, the client transitions to the ordering screen.
+
+### Ordering
+
+The ordering screen is split into two areas:
+
+* **Menu:** displayed vertically on the left, grouped by category.
+* **Order:** displayed on the right and initially empty.
+
+The bottom of the order area displays the current total and a **“Proceed to pay”** button. The button remains disabled while the order is empty.
+
+The customer can select a category to display its available products. When a product is selected:
+
+1. The client sends a request to add the product to the current order.
+2. The API returns the updated order.
+3. The client replaces its local order state with the returned order.
+4. The updated order and total are rendered.
+5. The **“Proceed to pay”** button becomes enabled.
+
+Each order item provides controls to increase or decrease its quantity. Quantity changes are sent to the API through the order-item update endpoint, and the returned order becomes the new client state.
+
+### Checkout
+
+When the customer taps **“Proceed to pay”**:
+
+1. The client calls the checkout API.
+2. A payment overlay is displayed instructing the customer to **continue on the payment terminal**.
+3. The client waits for the checkout response while keeping the payment overlay visible.
+
+#### Successful payment
+
+Once the API confirms payment:
+
+* The overlay is replaced by a success message.
+* The customer sees confirmation that the order was successfully paid.
+* After 5 seconds, the application returns to the idle screen for the next customer.
+
+#### Failed payment
+
+If the checkout fails:
+
+* The overlay displays an error message.
+* The customer can either **try again** or **cancel**.
+* Retrying initiates the checkout flow again.
+* Cancelling returns the customer to the ordering screen without completing the order.
