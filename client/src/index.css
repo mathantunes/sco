@@ -1,9 +1,22 @@
 @import "tailwindcss";
 
+@theme {
+  --color-ink: #172c2b;
+  --color-muted: #6a7770;
+  --color-paper: #f3efe5;
+  --color-line: #d8d6c9;
+  --color-coral: #e9694e;
+  --color-yellow: #f3c65d;
+  --color-mint: #b8d6bf;
+  --color-success: #5d9c6c;
+  --color-danger: #a4362c;
+  --color-muted-dark: #53655b;
+}
+
 :root {
   font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
-  color: #172c2b;
-  background: #f3efe5;
+  color: var(--color-ink);
+  background: var(--color-paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
