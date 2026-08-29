@@ -82,7 +82,7 @@ Adds an item to the current order.
 
 ```json
 {
-  "menuItemId": "coke",
+  "productId": "coke",
   "quantity": 1
 }
 ```
@@ -183,3 +183,4 @@ An abandoned session results in its order being marked as `ABANDONED`.
 ```text
 OPEN ──► ABANDONED
 ```
+  
