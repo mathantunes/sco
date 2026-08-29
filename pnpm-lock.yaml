@@ -35,6 +35,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12))
+      contracts:
+        specifier: workspace:*
+        version: link:../packages/contracts
       react:
         specifier: ^19.2.8
         version: 19.2.8
