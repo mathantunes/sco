@@ -15,3 +15,26 @@ and how you make them is most of what we're evaluating.
 * Authentication - the applications communicate locally and the client only provides an ID to the API. There is no further verification
 * Publishing transactions for reconciliation by another system
 * Database migrations
+
+## Project structure
+
+### Workspace
+
+* pnpm workspace for sharing types between client and api
+
+### Client
+
+* React app
+* Vite
+* Tailwind
+* Typescript
+
+### Api
+
+* Express
+* Typescript
+* Sqlite
+
+## Running the app
+
+From root, `pnpm dev` launches both client and api
