@@ -1,7 +1,7 @@
 export type PaymentSuccess = {
     kind: "success";
     transactionId: string;
-    amount: number;
+    amount: string;
     currency: string;
     paidAt: Date;
 }

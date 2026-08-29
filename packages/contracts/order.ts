@@ -10,13 +10,13 @@ export type OpenOrder = {
     createdAt: Date;
 }
 
-export type PaidOrder = OpenOrder & {
+export type PaidOrder = Omit<OpenOrder, "kind"> & {
     kind: "paid";
     paidAt: Date;
     payment: Payment;
 }
 
-export type AbandonedOrder = OpenOrder & {
+export type AbandonedOrder = Omit<OpenOrder, "kind"> & {
     kind: "abandoned";
     abandonedAt: Date;
 }
@@ -25,6 +25,8 @@ export type Order = OpenOrder | PaidOrder | AbandonedOrder;
 
 export type OrderItem = {
     id: string;
-    product: Product;
+    product: OrderProduct;
     quantity: number;
 };
+
+export type OrderProduct = Omit<Product, "imageUrl">;

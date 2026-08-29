@@ -1,4 +1,4 @@
-import { Price } from "./price";
+import type { Price } from "./price.js";
 
 export type Product = {
     id: string;

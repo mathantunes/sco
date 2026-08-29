@@ -1,4 +1,4 @@
 export type Price = {
-    amount: number;
+    amount: string;
     currency: "USD";
 }
