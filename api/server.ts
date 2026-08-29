@@ -125,7 +125,7 @@ app.post('/orders/:orderId/checkout', async (req, res) => {
   }
 
   const checkoutService = new CheckoutService();
-  const payment = await checkoutService.Checkout(order);
+  const payment = await checkoutService.checkout(order);
 
   if (payment.kind === "failure") {
     return res.status(400).json({ error: payment.reason });
