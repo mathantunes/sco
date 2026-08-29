@@ -5,6 +5,7 @@ import type { Payment } from "./payment.js";
 export type OpenOrder = {
     kind: "open";
     id: string;
+    deviceId: string;
     items: OrderItem[];
     totalPrice: Price;
     createdAt: Date;

@@ -16,6 +16,7 @@ export class OrderService {
         const order: OpenOrder = {
             kind: "open",
             id: `order-${crypto.randomUUID()}`,
+            deviceId,
             items: [],
             totalPrice: { amount: "0.00", currency: "USD" },
             createdAt: new Date(),
@@ -31,7 +32,7 @@ export class OrderService {
 
     async getOpenOrderForDevice(deviceId: string): Promise<OpenOrder | null> {
         const row = this.database.prepare(`
-            SELECT id, kind, total_amount, currency, created_at
+            SELECT id, kind, device_id, total_amount, currency, created_at
             FROM orders
             WHERE device_id = ? AND kind = 'open'
             LIMIT 1
@@ -118,6 +119,7 @@ export class OrderService {
         return {
             kind: 'open',
             id: row.id,
+            deviceId: row.device_id,
             items: itemRows.map((item) => ({
                 id: item.id,
                 product: {
@@ -139,6 +141,7 @@ export class OrderService {
 type OrderRow = {
     id: string;
     kind: 'open';
+    device_id: string;
     total_amount: string;
     currency: string;
     created_at: string;
