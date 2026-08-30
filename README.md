@@ -19,12 +19,16 @@ file-backed SQLite database, synchronous payment simulation, and no authenticati
 
 ## Running the app
 
-From root, `pnpm dev` launches both client and api
+* Make sure you have [pnpm](https://pnpm.io/installation#prerequisites) installed.
+
+From root, install dependencies with `pnpm i`.
+
+From root, `pnpm dev` launches both client and api. (see root package.json)
 
 * Server on http://localhost:3000
 * Client on http://localhost:5173
     * Use a deviceId query parameter to switch between devices (e.g. /?deviceId=device1)
-* SQLite db file on /api/data/snack-bar.db
+* SQLite db file on /api/data/snack-bar.db (automatically created with the required tables)
 
 ## Assumptions
 
