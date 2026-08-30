@@ -41,7 +41,7 @@ export function Shopping({ deviceId, menu, order }: ShoppingProps) {
 
             <section>
                 <div className="mx-auto grid min-h-[calc(100svh-14rem)] max-w-7xl items-stretch gap-8 py-8 md:grid-cols-[minmax(10rem,12rem)_minmax(0,1fr)] lg:gap-10">
-                    <nav aria-label="Menu categories" className="flex max-h-fit min-w-0 flex-col gap-2 rounded-xl border border-line bg-white/30 p-3 lg:border-0 lg:bg-transparent lg:p-0 lg:pr-6">
+                    <nav aria-label="Menu categories" className="flex max-h-fit min-w-0 flex-col gap-2 rounded-xl border border-line bg-white/30 p-3">
                         {categories.map((category) => (
                             <Category
                                 key={category.key}
