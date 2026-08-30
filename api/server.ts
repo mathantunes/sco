@@ -56,7 +56,7 @@ app.post('/sessions', async (req, res) => {
   });
 });
 
-app.post('/orders/:orderId/items', async (req, res) => {
+app.post('/order/items', async (req, res) => {
   const deviceId = req.query.deviceId as string | null;
   if (!deviceId) {
     return res.status(400).json({ error: 'deviceId is required' });
@@ -88,7 +88,7 @@ app.post('/orders/:orderId/items', async (req, res) => {
   return res.json({ order: updatedOrder });
 });
 
-app.put('/orders/:orderId/items/:itemId', async (req, res) => {
+app.put('/order/items/:itemId', async (req, res) => {
   const deviceId = req.query.deviceId as string | null;
   if (!deviceId) {
     return res.status(400).json({ error: 'deviceId is required' });
@@ -113,7 +113,7 @@ app.put('/orders/:orderId/items/:itemId', async (req, res) => {
   return res.json({ order: updatedOrder });
 });
 
-app.post('/orders/:orderId/checkout', async (req, res) => {
+app.post('/checkout', async (req, res) => {
   const deviceId = req.query.deviceId as string | null;
   if (!deviceId) {
     return res.status(400).json({ error: 'deviceId is required' });

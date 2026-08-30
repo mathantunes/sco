@@ -16,6 +16,13 @@ and how you make them is most of what we're evaluating.
 * Publishing transactions for reconciliation by another system
 * Database migrations
 
+## Use of AI
+
+I used AI for a few things in the project as a tool to speed up development:
+
+* After I defined the domain types, AI generated the necessary table commands. Fine tuning was still needed.
+* After I sketched it, AI wrote the api specs nicely formatted. Same for the client specs.
+
 ## Project structure
 
 ### Workspace
@@ -41,7 +48,9 @@ From root, `pnpm dev` launches both client and api
 
 ## API Routes
 
-The API is designed around a self-service checkout session associated with a physical device. The device identifies the store and the currently active order.
+The checkout API is device-centric. A device is registered to a store and may have at most one active checkout session at a time.
+
+Orders cannot be manipulated directly by their ID. All order mutations are performed through the device's currently open order. This prevents a client from modifying another order simply by knowing or guessing its ID.
 
 ### `POST /sessions`
 
@@ -56,8 +65,8 @@ Starts a new checkout session for a device.
 1. Validate that the device is registered to a store. If not, return `400 Bad Request`.
 2. Check whether the device has an existing open session.
 3. If an open session exists, abandon it.
-4. Create a new open session with an empty order.
-5. Return the newly created order and the store menu.
+4. Create a new open order for the device.
+5. Return the new order and the store menu.
 
 **Response**
 
@@ -70,9 +79,9 @@ Starts a new checkout session for a device.
 
 ---
 
-### `POST /orders/{orderId}/items`
+### `POST /order/items`
 
-Adds an item to the current order.
+Adds an item to the device's currently open order.
 
 **Query parameters**
 
@@ -90,10 +99,10 @@ Adds an item to the current order.
 **Behaviour**
 
 1. Validate the device.
-2. Load the open order associated with the device.
-3. If the item already exists, increment its quantity.
-4. Otherwise, add it to the order.
-5. Persist the updated order.
+2. Resolve the currently open order for the device.
+3. If no open order exists, return `404 Not Found`.
+4. Add the item to the order, or increment its existing quantity.
+5. Persist and return the updated order.
 
 **Response**
 
@@ -105,9 +114,9 @@ Adds an item to the current order.
 
 ---
 
-### `PUT /orders/{orderId}/items/{itemId}`
+### `PUT /order/items/{itemId}`
 
-Sets the quantity of an existing order item.
+Updates the quantity of an item in the device's currently open order.
 
 **Query parameters**
 
@@ -121,7 +130,17 @@ Sets the quantity of an existing order item.
 }
 ```
 
-A quantity of `0` removes the item from the order.
+A quantity of `0` removes the item.
+
+**Behaviour**
+
+1. Validate the device.
+2. Resolve the currently open order for the device.
+3. If no open order exists, return `404 Not Found`.
+4. Update the item quantity.
+5. Persist and return the updated order.
+
+The `itemId` identifies an item within the device's current order; it does not provide access to arbitrary orders.
 
 **Response**
 
@@ -133,9 +152,9 @@ A quantity of `0` removes the item from the order.
 
 ---
 
-### `POST /orders/{orderId}/checkout`
+### `POST /checkout`
 
-Completes payment for an open order.
+Completes payment for the device's currently open order.
 
 **Query parameters**
 
@@ -143,12 +162,13 @@ Completes payment for an open order.
 
 **Behaviour**
 
-1. Validate the device and associated store.
-2. Validate that the order belongs to the device and is open.
-3. Simulate payment processing.
-4. Generate a transaction ID after a short delay.
-5. Mark the order as paid and persist the transaction ID.
-6. Return the paid order.
+1. Validate the device and its associated store.
+2. Resolve the currently open order for the device.
+3. Validate that the order contains at least one item.
+4. Simulate payment processing.
+5. Generate a transaction ID.
+6. Mark the order as paid and persist the transaction ID.
+7. Return the paid order.
 
 **Response**
 
@@ -158,31 +178,48 @@ Completes payment for an open order.
 }
 ```
 
-The returned order has a `paid` status and contains the generated transaction ID.
+After successful checkout, the order can no longer be modified through the device endpoints.
 
 ---
 
 ## Order lifecycle
 
 ```text
-OPEN
- │
- ├── add/update items
- │
- ▼
-OPEN
- │
- ├── checkout
- │
- ▼
-PAID
+                 ┌──────────────┐
+                 │     OPEN     │
+                 └──────┬───────┘
+                        │
+             ┌──────────┴──────────┐
+             │                     │
+          checkout              new session
+             │                     │
+             ▼                     ▼
+          PAID                ABANDONED
 ```
 
-An abandoned session results in its order being marked as `ABANDONED`.
+A device can have only one open order at a time.
+
+#### Device/order ownership
+
+The API always resolves the active order through the device:
 
 ```text
-OPEN ──► ABANDONED
+deviceId
+   │
+   ▼
+registered device
+   │
+   ▼
+active session
+   │
+   ▼
+open order
 ```
+
+The client does not choose which order to modify. `orderId` is therefore not accepted on order mutation endpoints.
+
+This provides an additional authorization boundary: knowing an order ID alone is insufficient to modify it.
+
 
 ## Frontend Flow
 
