@@ -91,7 +91,7 @@ Adds an item to the device's currently open order.
 
 ```json
 {
-  "productId": "coke",
+  "productId": "drink1",
   "quantity": 1
 }
 ```
@@ -227,14 +227,14 @@ The self-checkout client is designed as a simple, touch-first kiosk experience.
 
 ### Idle
 
-When the application loads, it starts in an **idle** state and displays a prominent **“Tap to start”** action.
+When the application loads, it starts in an **idle** state and displays a prominent **“Start shopping”** action.
 
 ### Start Session
 
 When the customer taps to start:
 
 1. The client calls the API to create a new checkout session for the device.
-2. Once the session and initial menu are returned, the client transitions to the ordering screen.
+2. Once the session and **menu** are returned, the client transitions to the ordering screen.
 
 ### Ordering
 
@@ -243,7 +243,7 @@ The ordering screen is split into two areas:
 * **Menu:** displayed vertically on the left, grouped by category.
 * **Order:** displayed on the right and initially empty.
 
-The bottom of the order area displays the current total and a **“Proceed to pay”** button. The button remains disabled while the order is empty.
+The bottom of the order area displays the current total and a **“Proceed to payment”** button. The button remains disabled while the order is empty.
 
 The customer can select a category to display its available products. When a product is selected:
 
@@ -251,13 +251,13 @@ The customer can select a category to display its available products. When a pro
 2. The API returns the updated order.
 3. The client replaces its local order state with the returned order.
 4. The updated order and total are rendered.
-5. The **“Proceed to pay”** button becomes enabled.
+5. The **“Proceed to payment”** button becomes enabled.
 
 Each order item provides controls to increase or decrease its quantity. Quantity changes are sent to the API through the order-item update endpoint, and the returned order becomes the new client state.
 
 ### Checkout
 
-When the customer taps **“Proceed to pay”**:
+When the customer taps **“Proceed to payment”**:
 
 1. The client calls the checkout API.
 2. A payment overlay is displayed instructing the customer to **continue on the payment terminal**.
