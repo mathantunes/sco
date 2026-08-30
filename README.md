@@ -6,15 +6,35 @@ No cashier, just them and the screen. A client app talking to a web API.
 That's the whole spec. We've kept it deliberately short. The interesting decisions are yours to make,
 and how you make them is most of what we're evaluating.
 
+## Running the app
+
+From root, `pnpm dev` launches both client and api
+
+* Server on http://localhost:3000
+* Client on http://localhost:5173
+    * Use a deviceId query parameter to switch between devices (e.g. /?deviceId=device1)
+* SQLite db file on /api/data/snack-bar.db
+
 ## Assumptions
 
 * The snack bar does not sell any items that need to be prepared and have wait time. The customer can just grab the snacks from a shelf and go.
+* The client does not support offline capabilities. It acts as a thin layer for the session only. All data is mutated and persisted by the API only.
+* Responsive components but mainly optimized for "tablet" dimensions (e.g. iPad Mini)
+* The system can synchronously wait for the user - terminal interaction and continue with the checkout once it receives a response from the payment system.
 
 ## Out of scope deliberately
 
 * Authentication - the applications communicate locally and the client only provides an ID to the API. There is no further verification
 * Publishing transactions for reconciliation by another system
 * Database migrations
+* Automated testing
+* API input validation (e.g Zod could be used)
+* Automatic reset of session started but never finished
+* Inventory tracking
+* Taxes, discounts, promotions
+* Multi-currency
+* Refunds and credit operations (from the terminal)
+* Receipts
 
 ## Use of AI
 
@@ -22,6 +42,8 @@ I used AI for a few things in the project as a tool to speed up development:
 
 * After I defined the domain types, AI generated the necessary table commands. Fine tuning was still needed.
 * After I sketched it, AI wrote the api specs nicely formatted. Same for the client specs.
+* Dummy data generation for menus.
+* Logo for the snack bar.
 
 ## Project structure
 
@@ -41,10 +63,6 @@ I used AI for a few things in the project as a tool to speed up development:
 * Express
 * Typescript
 * Sqlite
-
-## Running the app
-
-From root, `pnpm dev` launches both client and api
 
 ## API Routes
 
@@ -255,6 +273,8 @@ The customer can select a category to display its available products. When a pro
 
 Each order item provides controls to increase or decrease its quantity. Quantity changes are sent to the API through the order-item update endpoint, and the returned order becomes the new client state.
 
+* In case a customer abandons a session before completing the payment, the **Reset** button can clear the local state and start a new session.
+
 ### Checkout
 
 When the customer taps **“Proceed to payment”**:
@@ -269,7 +289,7 @@ Once the API confirms payment:
 
 * The overlay is replaced by a success message.
 * The customer sees confirmation that the order was successfully paid.
-* After 5 seconds, the application returns to the idle screen for the next customer.
+* After 10 seconds, the application returns to the idle screen for the next customer.
 
 #### Failed payment
 
