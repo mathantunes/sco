@@ -4,7 +4,7 @@ import type { OpenOrder, PaidOrder } from 'contracts/order'
 
 export type SessionState = {
   deviceId: string
-  menu: Menu[]
+  menu: Menu | null
   order: OpenOrder | PaidOrder | null
   isLoading: boolean
   error: string | null

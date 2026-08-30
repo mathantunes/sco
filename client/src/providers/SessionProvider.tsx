@@ -18,7 +18,7 @@ export function SessionProvider({
 }: SessionProviderProps) {
     const [state, setState] = useState<SessionState>({
         deviceId,
-        menu: [],
+        menu: null,
         order: null,
         isLoading: false,
         error: null,
@@ -60,7 +60,7 @@ export function SessionProvider({
 
     async function startSession() {
         await run(async () => {
-            const response = await request<{ order: OpenOrder; menu: Menu[] }>(
+            const response = await request<{ order: OpenOrder; menu: Menu | null }>(
                 `/sessions?deviceId=${encodeURIComponent(deviceId)}`,
                 { method: 'POST' },
             )
@@ -120,7 +120,7 @@ export function SessionProvider({
     }
 
     function resetSession() {
-        setState((current) => ({ ...current, menu: [], order: null, error: null, paymentStatus: 'idle' }))
+        setState((current) => ({ ...current, menu: null, order: null, error: null, paymentStatus: 'idle' }))
     }
 
     function requireOpenOrder(): OpenOrder {

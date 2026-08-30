@@ -9,16 +9,16 @@ import { Header } from './Header'
 
 type ShoppingProps = {
     deviceId: string
-    menu: Menu[]
+    menu: Menu | null
     order: OpenOrder
 }
 
 export function Shopping({ deviceId, menu, order }: ShoppingProps) {
     const { isLoading, addItem, resetSession } = useSession()
-    const categories = menu.flatMap((section) => section.categories.map((category) => ({
+    const categories = menu?.categories.map((category) => ({
         ...category,
-        key: `${section.id}-${category.id}`,
-    })))
+        key: `${menu.id}-${category.id}`,
+    })) ?? []
     const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(-1)
     const selectedCategory = categories[selectedCategoryIndex]
 
