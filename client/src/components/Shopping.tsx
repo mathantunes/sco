@@ -14,7 +14,7 @@ type ShoppingProps = {
 }
 
 export function Shopping({ deviceId, menu, order }: ShoppingProps) {
-    const { isLoading, addItem } = useSession()
+    const { isLoading, addItem, resetSession } = useSession()
     const categories = menu.flatMap((section) => section.categories.map((category) => ({
         ...category,
         key: `${section.id}-${category.id}`,
@@ -35,7 +35,7 @@ export function Shopping({ deviceId, menu, order }: ShoppingProps) {
 
     return (
         <main className="min-h-svh bg-paper px-5 py-4 text-ink sm:px-8 lg:px-12">
-            <Header deviceId={deviceId} />
+            <Header deviceId={deviceId} onReset={resetSession} />
 
             <section className="mt-10">
                 <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-coral">Today’s shelf</p>
