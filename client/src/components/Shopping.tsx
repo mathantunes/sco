@@ -20,11 +20,9 @@ export function Shopping({ deviceId, menu, order }: ShoppingProps) {
         key: `${section.id}-${category.id}`,
     })))
     const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(-1)
-    const [isCategoryOpen, setIsCategoryOpen] = useState(false)
     const selectedCategory = categories[selectedCategoryIndex]
 
     function closeCategoryPopover() {
-        setIsCategoryOpen(false)
         setSelectedCategoryIndex(-1)
     }
 
@@ -51,7 +49,6 @@ export function Shopping({ deviceId, menu, order }: ShoppingProps) {
                                 isSelected={selectedCategory?.key === category.key}
                                 onSelect={() => {
                                     setSelectedCategoryIndex(categories.findIndex((item) => item.key === category.key))
-                                    setIsCategoryOpen(true)
                                 }}
                             />
                         ))}
@@ -61,7 +58,7 @@ export function Shopping({ deviceId, menu, order }: ShoppingProps) {
                 </div>
             </section>
 
-            {isCategoryOpen && selectedCategory && (
+            {selectedCategory && (
                 <CategoryPopover
                     category={selectedCategory}
                     isLoading={isLoading}
