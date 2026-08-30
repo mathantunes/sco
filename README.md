@@ -62,6 +62,7 @@ I used AI for a few things in the project as a tool to speed up development:
 
 * After I defined the domain types, AI generated the necessary tables and SQL commands. Fine tuning was still needed.
 * After I sketched it, AI wrote the api specs nicely formatted. Same for the client specs.
+* Scaffold high level react components
 * Dummy data generation for menus.
 * Logo for the snack bar.
 * 1st Reviewer.
