@@ -1,9 +1,9 @@
 import type { AppDatabase } from "../database.js";
-import type { OpenOrder, PaidOrder } from "contracts/order.js";
+import { create, type OpenOrder, type Order, type PaidOrder } from "contracts/order.js";
 import type { PaymentSuccess } from "contracts/payment.js";
 
 export class OrderService {
-    constructor(private readonly database: AppDatabase) {}
+    constructor(private readonly database: AppDatabase) { }
 
     async abandonOrderForDevice(deviceId: string): Promise<void> {
         this.database.prepare(`
@@ -13,14 +13,7 @@ export class OrderService {
         `).run(new Date().toISOString(), deviceId);
     }
     async createOrder(deviceId: string, storeId: string): Promise<OpenOrder> {
-        const order: OpenOrder = {
-            kind: "open",
-            id: `order-${crypto.randomUUID()}`,
-            deviceId,
-            items: [],
-            totalPrice: { amount: "0.00", currency: "USD" },
-            createdAt: new Date(),
-        };
+        const order: OpenOrder = create();
 
         this.database.prepare(`
             INSERT INTO orders (id, device_id, store_id, kind, total_amount, currency, created_at)

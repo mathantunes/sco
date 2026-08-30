@@ -53,6 +53,17 @@ export const replaceItemInOrder = (order: OpenOrder, orderItem: OrderItem): Open
     }
 }
 
+export const create = (): OpenOrder => {
+    return {
+        kind: "open",
+        id: `order-${crypto.randomUUID()}`,
+        deviceId: "",
+        items: [],
+        totalPrice: { amount: "0.00", currency: "USD" },
+        createdAt: new Date()
+    };
+}
+
 export const addItemToOrder = (order: OpenOrder, orderItem: OrderItem): OpenOrder => {
     const existingItemIndex = order.items.findIndex(item => item.product.id === orderItem.product.id);
     if (existingItemIndex !== -1) {
