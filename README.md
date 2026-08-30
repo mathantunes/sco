@@ -85,6 +85,22 @@ I used AI for a few things in the project as a tool to speed up development:
 * Typescript
 * Sqlite
 
+### Contracts
+
+* Typescript
+
+## Domain entities
+
+The shared contracts package defines the application language used by both the API and the client. The important idea is that `Order` is the central state object, and it is modeled as a discriminated union in [packages/contracts/order.ts](packages/contracts/order.ts): `OpenOrder`, `PaidOrder`, and `AbandonedOrder`.
+
+That union is useful because it encodes the lifecycle explicitly and prevents impossible states. An order cannot be both `open` and `paid`, and payment details only exist for the paid state. The `kind` field acts as the discriminator, so TypeScript narrows the shape correctly as the order moves through checkout.
+
+The product and menu models are kept separate. `Product` in [packages/contracts/product.ts](packages/contracts/product.ts) is the catalog entity, while `Menu` in [packages/contracts/menu.ts](packages/contracts/menu.ts) is the storefront grouping used for browsing.
+
+When an order is built, the system stores a reduced `OrderProduct` snapshot so the order stores only the required information needed for checkout, without menu-only metadata such as `imageUrl`.
+
+I also kept a few domain functions in the same file for simplicity, such as adding an item to an order or computing the total. These are pure functions: they take an OpenOrder and return a new OpenOrder. That makes them easy to test directly with real inputs.
+
 ## API Routes
 
 The checkout API is device-centric. A device is registered to a store and may have at most one active checkout session at a time.
