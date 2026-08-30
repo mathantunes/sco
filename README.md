@@ -33,6 +33,7 @@ From root, `pnpm dev` launches both client and api
 * Inventory tracking
 * Taxes, discounts, promotions
 * Multi-currency
+* Multi-language support
 * Refunds and credit operations (from the terminal)
 * Receipts
 
