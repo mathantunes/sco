@@ -149,5 +149,85 @@ const menus: Record<string, Menu[]> = {
                 }
             ]
         }
+    ],
+    "store2": [
+        {
+            id: "store2-menu",
+            name: "Riverside Snack Bar",
+            categories: [
+                {
+                    id: "store2-savory",
+                    name: "Savory Snacks",
+                    items: [
+                        {
+                            id: "cheese-crackers",
+                            product: {
+                                id: "cheese-crackers",
+                                name: "Cheddar Crackers",
+                                price: { amount: "2.69", currency: "USD" },
+                                imageUrl: "https://images.unsplash.com/photo-1621939514649-280e2aa8adf3?w=400&h=400&fit=crop"
+                            }
+                        },
+                        {
+                            id: "roasted-peanuts",
+                            product: {
+                                id: "roasted-peanuts",
+                                name: "Roasted Peanuts",
+                                price: { amount: "2.39", currency: "USD" },
+                                imageUrl: "https://images.unsplash.com/photo-1567892737950-30c4db37cd89?w=400&h=400&fit=crop"
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: "store2-drinks",
+                    name: "Cold Drinks",
+                    items: [
+                        {
+                            id: "orange-soda",
+                            product: {
+                                id: "orange-soda",
+                                name: "Orange Soda",
+                                price: { amount: "1.99", currency: "USD" },
+                                imageUrl: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?w=400&h=400&fit=crop"
+                            }
+                        },
+                        {
+                            id: "still-water",
+                            product: {
+                                id: "still-water",
+                                name: "Bottled Water",
+                                price: { amount: "1.49", currency: "USD" },
+                                imageUrl: "https://images.unsplash.com/photo-1564419320461-6870880221ad?w=400&h=400&fit=crop"
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: "store2-sweets",
+                    name: "Sweet Treats",
+                    items: [
+                        {
+                            id: "peanut-butter-cups",
+                            product: {
+                                id: "peanut-butter-cups",
+                                name: "Peanut Butter Cups",
+                                price: { amount: "2.79", currency: "USD" },
+                                imageUrl: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=400&fit=crop"
+                            }
+                        },
+                        {
+                            id: "fruit-snacks",
+                            product: {
+                                id: "fruit-snacks",
+                                name: "Fruit Snack Pack",
+                                price: { amount: "1.99", currency: "USD" },
+                                imageUrl: "https://images.unsplash.com/photo-1614707267537-2b1b7a6f0a4a?w=400&h=400&fit=crop"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
     ]
 };
