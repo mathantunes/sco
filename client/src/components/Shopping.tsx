@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Menu } from 'contracts/menu'
 import type { OpenOrder } from 'contracts/order'
-import { useSession } from '../providers/SessionProvider'
+import { useSession } from '../providers/useSession'
 import { Category } from './Category'
 import { CategoryPopover } from './CategoryPopover'
 import { OpenOrder as OpenOrderPanel } from './OpenOrder'

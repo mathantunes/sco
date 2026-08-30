@@ -1,5 +1,5 @@
 import type { OpenOrder as OpenOrderData } from 'contracts/order'
-import { useSession } from '../providers/SessionProvider'
+import { useSession } from '../providers/useSession'
 import { CheckoutPopover } from './CheckoutPopover'
 
 type OpenOrderProps = {

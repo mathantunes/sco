@@ -1,39 +1,15 @@
 import {
-    createContext,
-    useContext,
     useState,
     type PropsWithChildren,
 } from 'react'
 import type { Menu } from 'contracts/menu'
 import type { OpenOrder, PaidOrder } from 'contracts/order'
-
-type SessionState = {
-    deviceId: string
-    menu: Menu[]
-    order: OpenOrder | PaidOrder | null
-    isLoading: boolean
-    error: string | null
-    paymentStatus: 'idle' | 'pending' | 'success' | 'error'
-}
-
-type SessionActions = {
-    startSession: () => Promise<void>
-    addItem: (productId: string, quantity?: number) => Promise<void>
-    updateItemQuantity: (itemId: string, quantity: number) => Promise<void>
-    checkout: () => Promise<void>
-    dismissPayment: () => void
-    resetSession: () => void
-    clearError: () => void
-}
-
-export type SessionContextValue = SessionState & SessionActions
+import { SessionContext, type SessionState, type SessionContextValue } from './SessionContext'
 
 type SessionProviderProps = PropsWithChildren<{
     deviceId: string
     apiBaseUrl?: string
 }>
-
-const SessionContext = createContext<SessionContextValue | null>(null)
 
 export function SessionProvider({
     children,
@@ -134,7 +110,7 @@ export function SessionProvider({
                 await new Promise((resolve) => setTimeout(resolve, 1200))
                 setState((current) => ({ ...current, order: response.order }))
             })
-        } catch (error) {
+        } catch {
             setState((current) => ({ ...current, paymentStatus: 'error' }))
         }
     }
@@ -166,12 +142,4 @@ export function SessionProvider({
     }
 
     return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
-}
-
-export function useSession() {
-    const context = useContext(SessionContext)
-    if (!context) {
-        throw new Error('useSession must be used within a SessionProvider')
-    }
-    return context
 }

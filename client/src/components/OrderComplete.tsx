@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import type { PaidOrder } from 'contracts/order'
-import { useSession } from '../providers/SessionProvider'
+import { useSession } from '../providers/useSession'
 import { Header } from './Header'
 
 type OrderCompleteProps = {

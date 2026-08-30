@@ -1,4 +1,4 @@
-import { useSession } from './providers/SessionProvider'
+import { useSession } from './providers/useSession'
 import { Idle } from './components/Idle'
 import { OrderComplete } from './components/OrderComplete'
 import { Shopping } from './components/Shopping'

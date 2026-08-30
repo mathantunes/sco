@@ -1,4 +1,4 @@
-import { useSession } from '../providers/SessionProvider'
+import { useSession } from '../providers/useSession'
 import { Header } from './Header'
 import { Logo } from './Logo'
 
