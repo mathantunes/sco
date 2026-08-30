@@ -17,6 +17,8 @@ I defined the shared domain contracts before building the API and UI, then used 
 both sides aligned. I kept the implementation intentionally small: in-memory device and menu data, a
 file-backed SQLite database, synchronous payment simulation, and no authentication or migration framework.
 
+The API layer is still doing too much. For a production application, the server.ts layer could be cleaned up and made leaner. After input validation, the service methods should be called. Repository classes that handle DB interactions should be injected into the service.
+
 ## Running the app
 
 * Make sure you have [pnpm](https://pnpm.io/installation#prerequisites) installed.
@@ -52,6 +54,7 @@ From root, `pnpm dev` launches both client and api. (see root package.json)
 * Multi-language support
 * Refunds and credit operations (from the terminal)
 * Receipts
+* Logging
 
 ## Use of AI
 
@@ -61,6 +64,7 @@ I used AI for a few things in the project as a tool to speed up development:
 * After I sketched it, AI wrote the api specs nicely formatted. Same for the client specs.
 * Dummy data generation for menus.
 * Logo for the snack bar.
+* 1st Reviewer.
 
 ## Project structure
 
