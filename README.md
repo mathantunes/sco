@@ -27,7 +27,7 @@ From root, `pnpm dev` launches both client and api. (see root package.json)
 
 * Server on http://localhost:3000
 * Client on http://localhost:5173
-    * Use a deviceId query parameter to switch between devices (e.g. /?deviceId=device1)
+    * Use a deviceId query parameter to switch between devices (e.g. /?deviceId=device1 or device2, each wired to a different store/menu)
 * SQLite db file on /api/data/snack-bar.db (automatically created with the required tables)
 
 ## Assumptions
