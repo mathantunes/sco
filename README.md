@@ -6,6 +6,17 @@ No cashier, just them and the screen. A client app talking to a web API.
 That's the whole spec. We've kept it deliberately short. The interesting decisions are yours to make,
 and how you make them is most of what we're evaluating.
 
+## How It Was Built
+
+I treated the API as the source of truth and kept the client focused on the kiosk experience.
+The server owns the orders, validates products against the store menu, calculates totals, and persists the
+order lifecycle and payment record in SQLite.
+The client uses a small session provider to request actions and replace its local view with the API response. The server always replies with a new Order so the client can easily re-render it.
+
+I defined the shared domain contracts before building the API and UI, then used the pnpm workspace to keep
+both sides aligned. I kept the implementation intentionally small: in-memory device and menu data, a
+file-backed SQLite database, synchronous payment simulation, and no authentication or migration framework.
+
 ## Running the app
 
 From root, `pnpm dev` launches both client and api
@@ -70,6 +81,13 @@ I used AI for a few things in the project as a tool to speed up development:
 The checkout API is device-centric. A device is registered to a store and may have at most one active checkout session at a time.
 
 Orders cannot be manipulated directly by their ID. All order mutations are performed through the device's currently open order. This prevents a client from modifying another order simply by knowing or guessing its ID.
+
+### What I discarded
+
+I initially modeled order mutations as resource-based APIs, passing an `orderId` to each endpoint. I
+replaced that with device-owned APIs: the device identifies its registered store, and the API resolves
+the device's single open order. This better matches the kiosk workflow and avoids allowing a client to
+modify an arbitrary order from the order ID.
 
 ### `POST /sessions`
 
