@@ -39,6 +39,7 @@ From root, `pnpm dev` launches both client and api. (see root package.json)
 
 ## Out of scope deliberately
 
+* Concurrent update issues: The database (SQLite) used in this PoC does not support row-level locking to enforce one-at-a-time updates to ensure Order updates are not executed in parallel. Other solutions could be considered such as distributed lock or optimistic version check
 * Authentication - the applications communicate locally and the client only provides an ID to the API. There is no further verification
 * Publishing transactions for reconciliation by another system
 * Database migrations
