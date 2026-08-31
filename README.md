@@ -3,8 +3,6 @@
 Build a small self-service checkout web app for a snack bar. Picture the setting: a customer walks
 up to a tablet mounted at the counter, browses the menu, builds an order, pays, and walks away.
 No cashier, just them and the screen. A client app talking to a web API.
-That's the whole spec. We've kept it deliberately short. The interesting decisions are yours to make,
-and how you make them is most of what we're evaluating.
 
 ## How It Was Built
 
