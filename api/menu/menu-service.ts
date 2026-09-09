@@ -43,7 +43,7 @@ const menus: Record<string, Menu> = {
                             id: "popcorn-sea-salt",
                             name: "Sea Salt Popcorn",
                             price: { amount: "2.99", currency: "USD" },
-                            imageUrl: "https://images.unsplash.com/photo-1578849278619-1cfb8e9c2a3d?w=400&h=400&fit=crop"
+                            imageUrl: "https://images.unsplash.com/photo-1585647347384-2593bc35786b?w=400&h=400&fit=crop"
                         }
                     },
                     {
