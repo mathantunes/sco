@@ -5,6 +5,13 @@ import { MenuService } from "./menu/menu-service.js";
 import { addItemToOrder, computeTotalPrice, replaceItemInOrder, type OpenOrder, type Order, type OrderItem } from "contracts/order";
 import { OrderService } from "./order/order-service.js";
 import { CheckoutService } from "./checkout/checkout-service.js";
+import {
+  addItemBodySchema,
+  deviceQuerySchema,
+  updateItemBodySchema,
+  updateItemParamsSchema,
+  validationError,
+} from "./validation.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -36,10 +43,11 @@ app.get('/status', (_req, res) => {
 });
 
 app.post('/sessions', async (req, res) => {
-  const deviceId = req.query.deviceId as string | null;
-  if (!deviceId) {
-    return res.status(400).json({ error: 'deviceId is required' });
+  const query = deviceQuerySchema.safeParse(req.query);
+  if (!query.success) {
+    return res.status(400).json(validationError(query.error));
   }
+  const { deviceId } = query.data;
 
   const storeId = await deviceService.getStoreId(deviceId);
   if (!storeId) {
@@ -57,10 +65,19 @@ app.post('/sessions', async (req, res) => {
 });
 
 app.post('/order/items', async (req, res) => {
-  const deviceId = req.query.deviceId as string | null;
-  if (!deviceId) {
-    return res.status(400).json({ error: 'deviceId is required' });
+  const query = deviceQuerySchema.safeParse(req.query);
+  const body = addItemBodySchema.safeParse(req.body);
+  if (!query.success || !body.success) {
+    return res.status(400).json({
+      error: 'invalid request',
+      details: [
+        ...(query.success ? [] : query.error.issues),
+        ...(body.success ? [] : body.error.issues),
+      ],
+    });
   }
+  const { deviceId } = query.data;
+  const { productId, quantity } = body.data;
 
   const storeId = await deviceService.getStoreId(deviceId);
   if (!storeId) {
@@ -72,7 +89,7 @@ app.post('/order/items', async (req, res) => {
     return res.status(404).json({ error: 'open order not found' });
   }
 
-  const product = await menuService.getProductById(storeId, req.body.productId);
+  const product = await menuService.getProductById(storeId, productId);
 
   if (!product) {
     return res.status(404).json({ error: 'product not found' });
@@ -81,7 +98,7 @@ app.post('/order/items', async (req, res) => {
   const orderToUpdate = computeTotalPrice(addItemToOrder(order, {
     id: `item-${crypto.randomUUID()}`,
     product: product,
-    quantity: req.body.quantity,
+    quantity,
   }));
 
   const updatedOrder = await orderService.updateOrder(order.id, orderToUpdate);
@@ -89,24 +106,36 @@ app.post('/order/items', async (req, res) => {
 });
 
 app.put('/order/items/:itemId', async (req, res) => {
-  const deviceId = req.query.deviceId as string | null;
-  if (!deviceId) {
-    return res.status(400).json({ error: 'deviceId is required' });
+  const query = deviceQuerySchema.safeParse(req.query);
+  const params = updateItemParamsSchema.safeParse(req.params);
+  const body = updateItemBodySchema.safeParse(req.body);
+  if (!query.success || !params.success || !body.success) {
+    return res.status(400).json({
+      error: 'invalid request',
+      details: [
+        ...(query.success ? [] : query.error.issues),
+        ...(params.success ? [] : params.error.issues),
+        ...(body.success ? [] : body.error.issues),
+      ],
+    });
   }
+  const { deviceId } = query.data;
+  const { itemId } = params.data;
+  const { quantity } = body.data;
 
   const order = await orderService.getOpenOrderForDevice(deviceId);
   if (!order) {
     return res.status(404).json({ error: 'open order not found' });
   }
 
-  const item = order.items.find(i => i.id === req.params.itemId);
+  const item = order.items.find(i => i.id === itemId);
   if (!item) {
     return res.status(404).json({ error: 'item not found in order' });
   }
 
   const orderToUpdate = computeTotalPrice(replaceItemInOrder(order, {
     ...item,
-    quantity: req.body.quantity,
+    quantity,
   }));
 
   const updatedOrder = await orderService.updateOrder(order.id, orderToUpdate);
@@ -114,10 +143,11 @@ app.put('/order/items/:itemId', async (req, res) => {
 });
 
 app.post('/checkout', async (req, res) => {
-  const deviceId = req.query.deviceId as string | null;
-  if (!deviceId) {
-    return res.status(400).json({ error: 'deviceId is required' });
+  const query = deviceQuerySchema.safeParse(req.query);
+  if (!query.success) {
+    return res.status(400).json(validationError(query.error));
   }
+  const { deviceId } = query.data;
 
   const order = await orderService.getOpenOrderForDevice(deviceId);
   if (!order) {

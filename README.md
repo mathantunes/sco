@@ -44,7 +44,7 @@ From root, `pnpm dev` launches both client and api. (see root package.json)
 * Publishing transactions for reconciliation by another system
 * Database migrations
 * Automated testing
-* API input validation (e.g Zod could be used)
+~* API input validation (e.g Zod could be used)~
 * Automatic reset of session started but never finished
 * Inventory tracking
 * Taxes, discounts, promotions
