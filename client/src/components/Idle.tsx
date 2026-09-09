@@ -18,9 +18,9 @@ export function Idle({ deviceId }: IdleProps) {
 
         <div className="w-full max-w-xl text-center">
           <p className="mb-5 text-xs font-extrabold uppercase tracking-[0.14em] text-coral">Self-service checkout</p>
-          <h1 className="font-serif text-[clamp(3rem,7vw,5.375rem)] font-normal leading-[0.92] tracking-[-0.055em]">Good snacks.<br /><em className="text-coral">No waiting.</em></h1>
+          <h1 data-testid="idle-heading" className="font-serif text-[clamp(3rem,7vw,5.375rem)] font-normal leading-[0.92] tracking-[-0.055em]">Good snacks.<br /><em className="text-coral">No waiting.</em></h1>
           <p className="mx-auto my-7 max-w-sm text-[17px] leading-6 text-muted">Tap below to browse the menu and build your order.</p>
-          <button type="button" onClick={() => void startSession()} disabled={isLoading} className="relative inline-flex w-full max-w-xl items-center justify-center border border-ink bg-ink px-6 py-5 text-base font-bold text-paper transition hover:-translate-y-1 hover:bg-coral focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-yellow disabled:cursor-wait disabled:opacity-60">
+          <button data-testid="start-shopping" type="button" onClick={() => void startSession()} disabled={isLoading} className="relative inline-flex w-full max-w-xl items-center justify-center border border-ink bg-ink px-6 py-5 text-base font-bold text-paper transition hover:-translate-y-1 hover:bg-coral focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-yellow disabled:cursor-wait disabled:opacity-60">
             {isLoading ? 'Opening session...' : 'Start shopping'}
             <span aria-hidden="true" className="absolute right-5 text-2xl leading-3 text-yellow">↗</span>
           </button>

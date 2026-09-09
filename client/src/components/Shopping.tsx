@@ -36,12 +36,12 @@ export function Shopping({ deviceId, menu, order }: ShoppingProps) {
             <Header deviceId={deviceId} onReset={resetSession} />
 
             <section className="mt-10">
-                <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-coral">Today’s shelf</p>
+                <p data-testid="shopping-heading" className="text-xs font-extrabold uppercase tracking-[0.14em] text-coral">Today’s shelf</p>
             </section>
 
             <section>
                 <div className="mx-auto grid min-h-[calc(100svh-14rem)] max-w-7xl items-stretch gap-8 py-8 md:grid-cols-[minmax(10rem,12rem)_minmax(0,1fr)] lg:gap-10">
-                    <nav aria-label="Menu categories" className="flex max-h-fit min-w-0 flex-col gap-2 rounded-xl border border-line bg-white/30 p-3">
+                    <nav data-testid="menu-categories" aria-label="Menu categories" className="flex max-h-fit min-w-0 flex-col gap-2 rounded-xl border border-line bg-white/30 p-3">
                         {categories.map((category) => (
                             <Category
                                 key={category.key}
