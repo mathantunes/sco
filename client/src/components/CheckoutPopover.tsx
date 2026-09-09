@@ -12,9 +12,9 @@ export function CheckoutPopover({ isLoading, paymentStatus, error, onClose }: Ch
         <div className="mx-auto grid size-16 place-items-center rounded-full border border-ink bg-yellow text-3xl" aria-hidden="true">$</div>
         {paymentStatus === 'success' ? (
           <>
-            <div className="mt-7 h-2 w-full bg-success" role="status" aria-label="Payment approved" />
+            <div data-testid="payment-approved" className="mt-7 h-2 w-full bg-success" role="status" aria-label="Payment approved" />
             <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.14em] text-success">Payment approved</p>
-            <h2 id="payment-title" className="mt-3 font-serif text-4xl font-normal leading-none">Thank you.</h2>
+            <h2 data-testid="payment-thank-you" id="payment-title" className="mt-3 font-serif text-4xl font-normal leading-none">Thank you.</h2>
           </>
         ) : paymentStatus === 'error' ? (
           <>

@@ -28,7 +28,7 @@ export function CategoryPopover({ category, isLoading, onAddProduct, onClose }: 
                 <p className="mt-1 font-mono text-sm text-muted">${product.price.amount}</p>
                 </div>
               </div>
-              <button type="button" onClick={() => onAddProduct(product.id)} disabled={isLoading} className="shrink-0 border border-ink px-4 py-3 text-sm font-bold hover:bg-yellow disabled:cursor-wait disabled:opacity-50">Add <span aria-hidden="true">+</span></button>
+              <button data-testid={`add-product-${product.id}`} type="button" onClick={() => onAddProduct(product.id)} disabled={isLoading} className="shrink-0 border border-ink px-4 py-3 text-sm font-bold hover:bg-yellow disabled:cursor-wait disabled:opacity-50">Add <span aria-hidden="true">+</span></button>
             </div>
           ))}
         </div>

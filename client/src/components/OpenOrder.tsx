@@ -40,7 +40,7 @@ export function OpenOrder({ order }: OpenOrderProps) {
       <div className="mt-3 flex items-center justify-between border-t border-ink/30 pt-4 font-bold">
         <span>Total</span><span className="font-mono">${order.totalPrice.amount}</span>
       </div>
-      <button type="button" onClick={() => void handleCheckout()} disabled={isLoading || order.items.length === 0} className="mt-5 w-full bg-ink px-4 py-4 text-sm font-bold text-paper transition hover:bg-coral disabled:cursor-not-allowed disabled:opacity-50">
+      <button data-testid="proceed-to-payment" type="button" onClick={() => void handleCheckout()} disabled={isLoading || order.items.length === 0} className="mt-5 w-full bg-ink px-4 py-4 text-sm font-bold text-paper transition hover:bg-coral disabled:cursor-not-allowed disabled:opacity-50">
         Proceed to payment <span aria-hidden="true">↗</span>
       </button>
       {error && <p className="mt-3 text-sm text-danger" role="alert">{error}</p>}

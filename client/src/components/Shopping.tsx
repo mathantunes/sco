@@ -46,6 +46,7 @@ export function Shopping({ deviceId, menu, order }: ShoppingProps) {
                             <Category
                                 key={category.key}
                                 name={category.name}
+                                testId={`category-${category.id}`}
                                 isSelected={selectedCategory?.key === category.key}
                                 onSelect={() => {
                                     setSelectedCategoryIndex(categories.findIndex((item) => item.key === category.key))
