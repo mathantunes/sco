@@ -33,24 +33,15 @@ export type OrderItem = {
 export type OrderProduct = Omit<Product, "imageUrl">;
 
 export const replaceItemInOrder = (order: OpenOrder, orderItem: OrderItem): OpenOrder => {
+    const items = [...order.items];
     const existingItemIndex = order.items.findIndex(item => item.product.id === orderItem.product.id);
     if (existingItemIndex !== -1) {
-        const updatedItems = [
-            ...order.items.slice(0, existingItemIndex),
-            orderItem,
-            ...order.items.slice(existingItemIndex + 1)
-        ];
-
-        return {
-            ...order,
-            items: updatedItems
-        };
+        items.splice(existingItemIndex, 1, orderItem);
     } else {
-        return {
-            ...order,
-            items: [...order.items, orderItem]
-        };
+        items.push(orderItem);
     }
+
+    return { ...order, items: items.filter(item => item.quantity !== 0) };
 }
 
 export const create = (): OpenOrder => {

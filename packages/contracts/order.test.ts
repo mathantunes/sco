@@ -74,6 +74,18 @@ describe("order helpers", () => {
         expect(order.items).toEqual([firstItem, secondItem]);
     });
 
+    it("replaceItemInOrder removes an existing product when its quantity is zero", () => {
+        const itemToRemove = createItem("coffee", "2.50", 1);
+        const remainingItem = createItem("tea", "1.75", 1);
+        const order = createOrder([itemToRemove, remainingItem]);
+        const deletion = createItem("coffee", "2.50", 0);
+
+        const updatedOrder = replaceItemInOrder(order, deletion);
+
+        expect(updatedOrder.items).toEqual([remainingItem]);
+        expect(order.items).toEqual([itemToRemove, remainingItem]);
+    });
+
     it("replaceItemInOrder appends a product that is not already in the order", () => {
         const order = createOrder([createItem("coffee", "2.50", 1)]);
         const item = createItem("tea", "1.75", 2);
